@@ -1,0 +1,7 @@
+﻿
+*.suo
+*.csproj
+*.sln
+ImagerClient/Library/
+ImagerClient/Temp/
+ImagerClient/obj/
