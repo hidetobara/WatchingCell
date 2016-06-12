@@ -1,3 +1,3 @@
 <?php
-define( 'DATA_DIR', '/home/baraoto/Imager/data/' );
+define( 'DATA_DIR', '/home/baraoto/ImagerServer/data/' );
 ?>
