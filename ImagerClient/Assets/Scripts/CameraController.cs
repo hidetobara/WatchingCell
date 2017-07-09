@@ -6,8 +6,7 @@ using System.Net;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine.Experimental.Networking;
+
 
 public class CameraController : MonoBehaviour
 {
@@ -31,6 +30,7 @@ public class CameraController : MonoBehaviour
 	void Start()
 	{
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		Application.targetFrameRate = 5;
 
 		string name = null;
 		foreach (var device in WebCamTexture.devices)
@@ -62,13 +62,13 @@ public class CameraController : MonoBehaviour
 			Color32[] data = _WebCam.GetPixels32();
 			_Texture.SetPixels32(data);
 			_Texture.Apply();
-			string filename = DateTime.Now.ToString("HHmm") + ".jpg";
+			string filename = DateTime.Now.ToString("MMddHHmm") + ".jpg";
 			byte[] image = _Texture.EncodeToJPG();
 
 			//UploadImage1(filename, image);
 			StartCoroutine(UploadImage2(filename, image));
 
-			yield return new WaitForSeconds(55f);
+			yield return new WaitForSeconds(300f);
 		}
 	}
 
