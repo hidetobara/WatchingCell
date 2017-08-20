@@ -40,7 +40,12 @@ public class CameraController : MonoBehaviour
 #endif
 				name = device.name;
 		}
-		if (name == null) return;
+		if (name == null)
+		{
+			SetLog("No devices are found. Count=" + WebCamTexture.devices.Length);
+			return;
+		}
+		SetLog("Starting...");
 
 		_WebCam = new WebCamTexture(name, 640, 480, 5);
 		GetComponent<RawImage>().material.mainTexture = _WebCam;
@@ -128,8 +133,7 @@ public class CameraController : MonoBehaviour
 		}
 		finally
 		{
-			Debug.Log(log);
-			LogText.text = log;
+			SetLog(log);
 		}
 	}
 
@@ -144,7 +148,12 @@ public class CameraController : MonoBehaviour
 		if (!string.IsNullOrEmpty(www.error)) log = www.error;
 		else log = www.text;
 
-		Debug.Log(log);
-		LogText.text = log;
+		SetLog(log);
+	}
+
+	private void SetLog(string s)
+	{
+		Debug.Log(s);
+		LogText.text = s;
 	}
 }
