@@ -26,3 +26,15 @@ public class Define
 		return BASE_URL + "show/" + NAMESPACE + "/";
 	}
 }
+
+/*
+/// 例
+public class MyDefine : Define
+{
+	string _Name;
+	public MyDefine(string name) { _Name = name; }
+
+	protected override string NAMESPACE { get { return _Name; } }
+	protected override string BASE_URL { get { return "http://127.0.0.1/Imager/"; } }
+}
+*/

@@ -145,7 +145,7 @@ public class CameraController : MonoBehaviour
 		while (!www.isDone) yield return null;
 
 		string log = null;
-		if (!string.IsNullOrEmpty(www.error)) log = www.error;
+		if (!string.IsNullOrEmpty(www.error)) log = www.error + ":" + DefineController.Instance.GetUploadUrl();
 		else log = www.text;
 
 		SetLog(log);
