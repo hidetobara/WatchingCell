@@ -18,5 +18,13 @@ $toDir = DATA_DIR . $namespace . '/';
 $to = $toDir . $filename;
 if( !file_exists($toDir) ) mkdir( $toDir );
 //print_r( array($from,$to) );
-if( rename( $from, $to ) ) echo( 'OK: ' . $namespace . '/' . $filename ); else echo( 'FAIL' );
+if( rename( $from, $to ) )
+{
+	chmod( $to, 0644 );
+	echo( 'OK: ' . $namespace . '/' . $filename );
+}
+else
+{
+	echo( 'FAIL' );
+}
 ?>
