@@ -12,8 +12,10 @@ public class CameraController : MonoBehaviour
 {
 	const string NewLine = "\r\n";
 
+	private float _IntervalSec;
 	WebCamTexture _WebCam;
 	Texture2D _Texture;
+	Color[] _Image;
 
 	public Text LogText;
 
@@ -50,11 +52,13 @@ public class CameraController : MonoBehaviour
 		_WebCam = new WebCamTexture(name, 640, 480, 5);
 		GetComponent<RawImage>().material.mainTexture = _WebCam;
 		_WebCam.Play();
-		_Texture = new Texture2D(_WebCam.width, _WebCam.height, TextureFormat.BGRA32, false);
+		_Texture = new Texture2D(_WebCam.width, _WebCam.height, TextureFormat.RGB24, false);
+		_Image = new Color[_WebCam.width * _WebCam.height];
 	}
 
-	public void StartUpload(string name)
+	public void StartUpload(string name, int interval)
 	{
+		_IntervalSec = interval * 60f;
 		DefineController.Instance = new MyDefine(name);
 		StartCoroutine(Uploading());
 	}
@@ -64,16 +68,16 @@ public class CameraController : MonoBehaviour
 		yield return new WaitForSeconds(1f);
 		while (true)
 		{
-			Color32[] data = _WebCam.GetPixels32();
-			_Texture.SetPixels32(data);
+			_Image = _WebCam.GetPixels();
+			_Texture.SetPixels(_Image);
 			_Texture.Apply();
-			string filename = DateTime.Now.ToString("MMddHHmm") + ".jpg";
+			string filename = DateTime.Now.ToString("yyMMddHHmm") + ".jpg";
 			byte[] image = _Texture.EncodeToJPG();
 
 			//UploadImage1(filename, image);
 			StartCoroutine(UploadImage2(filename, image));
 
-			yield return new WaitForSeconds(300f);
+			yield return new WaitForSeconds(_IntervalSec);
 		}
 	}
 

@@ -23,7 +23,7 @@ public class Define
 	}
 	public virtual string GetShowUrl()
 	{
-		return BASE_URL + "show/" + NAMESPACE + "/";
+		return BASE_URL + "show/" + NAMESPACE;
 	}
 }
 

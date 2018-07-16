@@ -7,6 +7,7 @@ public class UploadPanel : MonoBehaviour
 	const string NAMESPACE_KEY = "imager.namespace";
 
 	public InputField NamespaceText;
+	public Dropdown IntervalMin;
 
 	void Start()
 	{
@@ -23,6 +24,7 @@ public class UploadPanel : MonoBehaviour
 		PlayerPrefs.Save();
 		gameObject.SetActive(false);
 
-		CameraController.Instance.StartUpload(text);
+		int min = IntervalMin.value == 0 ? 60 : 5;
+		CameraController.Instance.StartUpload(text, min);
 	}
 }

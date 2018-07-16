@@ -34,9 +34,7 @@ public class ViewController : MonoBehaviour
 	{
 		while (true)
 		{
-			DateTime time = DateTime.Now - new TimeSpan(0, 2, 0);
-			string filename = time.ToString("HHmm") + ".jpg";
-			string url = DefineController.Instance.GetShowUrl() + filename;
+			string url = DefineController.Instance.GetShowUrl();
 			WWW www = new WWW(url);
 			while (!www.isDone) yield return null;
 

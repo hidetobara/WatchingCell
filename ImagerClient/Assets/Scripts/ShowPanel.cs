@@ -7,6 +7,7 @@ public class ShowPanel : MonoBehaviour
 	const string NAMESPACE_KEY = "imager.namespace";
 
 	public InputField NamespaceText;
+	public Dropdown IntervalMinute;
 
 	void Start()
 	{
