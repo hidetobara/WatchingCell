@@ -20,7 +20,7 @@ if( !file_exists($toDir) ) mkdir( $toDir );
 //print_r( array($from,$to) );
 if( rename( $from, $to ) )
 {
-	chmod( $to, 0644 );
+	chmod( $to, 0666 );
 	echo( 'OK: ' . $namespace . '/' . $filename );
 }
 else

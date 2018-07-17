@@ -24,7 +24,7 @@ public class UploadPanel : MonoBehaviour
 		PlayerPrefs.Save();
 		gameObject.SetActive(false);
 
-		int min = IntervalMin.value == 0 ? 60 : 5;
+		int min = IntervalMin.value == 0 ? 30 : 5;
 		CameraController.Instance.StartUpload(text, min);
 	}
 }

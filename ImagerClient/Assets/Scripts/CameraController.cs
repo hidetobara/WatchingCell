@@ -15,7 +15,6 @@ public class CameraController : MonoBehaviour
 	private float _IntervalSec;
 	WebCamTexture _WebCam;
 	Texture2D _Texture;
-	Color[] _Image;
 
 	public Text LogText;
 
@@ -53,7 +52,6 @@ public class CameraController : MonoBehaviour
 		GetComponent<RawImage>().material.mainTexture = _WebCam;
 		_WebCam.Play();
 		_Texture = new Texture2D(_WebCam.width, _WebCam.height, TextureFormat.RGB24, false);
-		_Image = new Color[_WebCam.width * _WebCam.height];
 	}
 
 	public void StartUpload(string name, int interval)
@@ -68,8 +66,8 @@ public class CameraController : MonoBehaviour
 		yield return new WaitForSeconds(1f);
 		while (true)
 		{
-			_Image = _WebCam.GetPixels();
-			_Texture.SetPixels(_Image);
+			Color[] pixels = _WebCam.GetPixels();
+			_Texture.SetPixels(pixels);
 			_Texture.Apply();
 			string filename = DateTime.Now.ToString("yyMMddHHmm") + ".jpg";
 			byte[] image = _Texture.EncodeToJPG();
