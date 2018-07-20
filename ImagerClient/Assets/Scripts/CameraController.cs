@@ -66,8 +66,8 @@ public class CameraController : MonoBehaviour
 		yield return new WaitForSeconds(1f);
 		while (true)
 		{
-			Color[] pixels = _WebCam.GetPixels();
-			_Texture.SetPixels(pixels);
+			Color32[] pixels = _WebCam.GetPixels32();
+			_Texture.SetPixels32(pixels);
 			_Texture.Apply();
 			string filename = DateTime.Now.ToString("yyMMddHHmm") + ".jpg";
 			byte[] image = _Texture.EncodeToJPG();
