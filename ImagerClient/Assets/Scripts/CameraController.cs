@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
 		foreach (var device in WebCamTexture.devices)
 		{
 #if !UNITY_EDITOR
-			if (!device.isFrontFacing || name == null)
+			if (device.isFrontFacing || name == null)
 #endif
 				name = device.name;
 		}
