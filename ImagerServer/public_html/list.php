@@ -5,20 +5,23 @@ error_reporting(E_ALL);
 require_once( 'define.php' );
 
 $uri = $_SERVER['REQUEST_URI'];
-$cells = explode( '/', $uri );
+$cells = explode( '?', $uri );
+$cells = explode( '/', $cells[0] );
 #var_dump($cells);
 $count = count( $cells );
 if($count == 4)
 {
+	$interval = 1;
+	if(!empty($_GET['interval']) && is_numeric($_GET['interval'])) $interval = (int)$_GET['interval'];
 	$space = $cells[3];
 	$paths = glob( DATA_DIR . $space . "/*.jpg" );
 	rsort( $paths );
 	$list = [];
-	foreach($paths as $path)
+	for($i = 0; $i < 24; $i++)
 	{
-		$a = pathinfo($path);
+		if(!isset($paths[$i * $interval])) break;
+		$a = pathinfo($paths[$i * $interval]);
 		$list[] = $a['basename'];
-		if(count($list) > 24) break;
 	}
 }
 else

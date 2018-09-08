@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Temperature</title>
+	<script src="js/Chart.bundle.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<div style="width:75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<br>
+	<script>
+		var config = {
+			type: 'line',
+			data: {
+				labels: [],
+				datasets: [{
+					label: 'My Home',
+					backgroundColor: 'rgb(255,99,132)',
+					borderColor: 'rgb(255,99,132)',
+					data: [],
+					fill: false,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Temerature Chart'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Temp'
+						}
+					}]
+				}
+			}
+		};
+
+		function ChartController (c)
+		{
+			var _config = c;
+
+			this.initialize = function()
+			{
+				$.getJSON( "/Imager/list_temperature.json?sensor=1", function( data ) {
+					//console.log(data);
+					var labels = [];
+					var values = [];
+					for(var i in data)
+					{
+						var row = data[i];
+						labels.push(row.date);
+						values.push(row.value);
+					}
+					_config.data.labels = labels;
+					_config.data.datasets[0].data = values;
+
+					initializeChart();
+				});
+			}
+			function initializeChart()
+			{
+				var ctx = document.getElementById('canvas').getContext('2d');
+				window.myLine = new Chart(ctx, _config);
+			}
+
+			var _that = this;
+			return this;
+		};
+
+		var controller = ChartController(config);
+		$(controller.initialize);
+	</script>
+</body>
+</html>
