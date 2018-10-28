@@ -2,9 +2,9 @@ var Obniz = require("obniz");
 var request = require("request");
 
 // Task Kill
-setTimeout(function(){ obniz.close(); process.exit(); }, 15000);
+setTimeout(function(){ obniz.close(); process.exit(); }, 60000);
 
-var obniz = new Obniz("6482-5638");
+var obniz = new Obniz("9185-2914");
 obniz.onconnect = async function ()
 {
 	// initialize
@@ -16,7 +16,8 @@ obniz.onconnect = async function ()
 	var co2_sensor = obniz.uart1;
 	var co2s = [];
 	co2_sensor.start({tx: 4, rx: 3, baud:9600, bits:8, stop:1, parity:"off", flowcontrol:"off"});
-	console.log(co2_sensor);
+	//console.log(co2_sensor);
+	var life = 60;
 	setInterval(async function(){
 		var command = [0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79];
 		co2_sensor.send(command);
@@ -38,9 +39,9 @@ obniz.onconnect = async function ()
 			var t = Math.floor( temperatures[ Math.floor(temperatures.length / 2) ] );
 			request.get({
 				url: "http://49.212.141.20/Imager/temperature.php",
-				qs: { sensor: 1, temperature: t }
+				qs: { sensor: 1000, temperature: t }
 				},
-				function(err, res, body){ console.log("body="+body); }
+				function(err, res, body){ console.log("temperature-body="+body); }
 			);
 		}
 		if(co2s.length > 0)
@@ -48,12 +49,12 @@ obniz.onconnect = async function ()
 			var c = co2s[ Math.floor(co2s.length / 2) ];
 			request.get({
 				url: "http://49.212.141.20/Imager/co2.php",
-				qs: { sensor: 1, co2: c }
+				qs: { sensor: 1000, co2: c }
 				},
-				function(err, res, body){ console.log("body="+body); }
+				function(err, res, body){ console.log("co2-body="+body); }
 			);
 		}
 		console.log("temp="+t+",co2="+c);
 		obniz.display.print("temp="+t+",co2="+c);
-	}, 10000);
+	}, 48*1000);
 };
