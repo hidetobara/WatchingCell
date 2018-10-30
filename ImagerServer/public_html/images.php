@@ -39,7 +39,7 @@ else
 <?php
 	foreach($list as $item)
 	{
-		$url = BASE_URL . 'show/' . $space . '/' . $item;
+		$url = BASE_URL . 'image/' . $space . '/' . $item;
 		printf("<tr><td>%s</td><td><img src='%s' /></td></tr>\n", $item, $url);
 	}
 ?>
