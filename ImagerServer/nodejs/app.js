@@ -13,10 +13,10 @@ obniz.onconnect = async function ()
 	temperature_sensor.onchange = function(temp){
 		temperatures.push(temp);
 	};
-	var co2_sensor = obniz.uart1;
+	var co2_sensor = obniz.getFreeUart();
 	var co2s = [];
 	co2_sensor.start({tx: 4, rx: 3, baud:9600, bits:8, stop:1, parity:"off", flowcontrol:"off"});
-	console.log(co2_sensor);
+	co2_sensor.send([0xFF, 0x01, 0x79, 0xA0, 0x00, 0x00, 0x00, 0x00, 0xE6]);
 	setInterval(async function(){
 		var command = [0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79];
 		co2_sensor.send(command);

@@ -11,8 +11,10 @@ var obniz = new Obniz(""+SENSOR_ID, {auto_connect: false});
 // Measuring Class
 function Measuring()
 {
-	var TSL2561_LUX_CHSCALE = 10;
-	var TSL2561_LUX_LUXSCALE = 14;
+	var GAINS = {0x00: 16.0*322.0/11.0, 0x01: 16.0*322.0/81.0, 0x02: 16.0*1.0, 0x12: 1.0*1.0}
+	var _gain = 0x00; // Need modify gain.
+	function getGain(){ return _gain; }
+	function getScale() { return GAINS[_gain]; }
 
 	var _luxs = [];
 	var _voltages = [];
@@ -49,10 +51,8 @@ function Measuring()
 
 	function compute_lux(int0, int1)
 	{
-		var chScale = (1 << TSL2561_LUX_CHSCALE);
-		chScale *= 4;
-		ch0 = (int0 * chScale) >> TSL2561_LUX_CHSCALE;
-		ch1 = (int1 * chScale) >> TSL2561_LUX_CHSCALE;
+		var ch0 = int0 * getScale();
+		var ch1 = int1 * getScale();
 
 		var ratio = ch1 / ch0;
 		var lux = 0.0;
@@ -96,7 +96,7 @@ function Measuring()
 
 	this.run = function()
 	{
-		print("running...");
+		print("running... scale=" + getScale());
 		// lux
 		_i2c = obniz.getFreeI2C();
 		_i2c.start({mode:"master", sda:0, scl:1, clock:100000});
@@ -106,8 +106,7 @@ function Measuring()
 		// start tsl
 		_i2c.write(0x39, [0x80, 0x03]);
 		// modify tsl gain
-		_i2c.write(0x39, [0x81, 0x02]);	
-		//i2c.write(0x39, [0x81, 0x12]); // x16
+		_i2c.write(0x39, [0x81, getGain()]);
 		setInterval(interval, 2000);
 	}
 
